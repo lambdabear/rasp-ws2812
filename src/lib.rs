@@ -86,8 +86,13 @@ impl Leds {
         let mut data = vec![RGB8::default(); self.leds_num];
         let smoothness_pts = 500;
 
-        for j in LOWEST_BRIGHTNESS as i32..smoothness_pts {
+        for j in 0..smoothness_pts {
             let bright = 255.0 * (1.0 - (2.0 * j as f32 / smoothness_pts as f32 - 1.0).powi(2));
+            let bright = if bright > LOWEST_BRIGHTNESS {
+                bright
+            } else {
+                LOWEST_BRIGHTNESS
+            };
 
             for i in 0..self.leds_num {
                 data[i] = color;
@@ -108,9 +113,14 @@ impl Leds {
         let g = 0.14;
         let b = 0.5;
 
-        for j in LOWEST_BRIGHTNESS as i32..smoothness_pts {
+        for j in 0..smoothness_pts {
             let bright =
                 255.0 * (-((j as f32 / smoothness_pts as f32 - b) / g).powi(2) / 2.0).exp();
+            let bright = if bright > LOWEST_BRIGHTNESS {
+                bright
+            } else {
+                LOWEST_BRIGHTNESS
+            };
 
             for i in 0..self.leds_num {
                 data[i] = color;
