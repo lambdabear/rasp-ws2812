@@ -9,7 +9,7 @@ fn main() -> Result<(), Error> {
     // Other modes and PINs are available depending on the Raspberry Pi revision
     // Additional OS configuration might be needed for any mode.
     // Check https://github.com/jgarff/rpi_ws281x for more information.
-    const PIN: i32 = 10; // GPIO10 -> SPI0, GPIO18 -> PWM0, GPIO21 -> PCM
+    const PIN: i32 = 18; // GPIO10 -> SPI0, GPIO18 -> PWM0, GPIO21 -> PCM
     const LED_NUM: usize = 60;
     const DELAY: Duration = Duration::from_millis(1000);
 
