@@ -169,6 +169,9 @@ fn main() -> Result<(), Error> {
         for _ in 0..3 {
             leds.circular_wave_breathing(GREEN, Duration::from_millis(10))?;
         }
+        for _ in 0..3 {
+            leds.gaussian_wave_breathing(ORANGE, Duration::from_millis(10))?;
+        }
 
         // Rainbow LED demo
         println!("Rainbow ...");

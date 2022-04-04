@@ -86,8 +86,31 @@ impl Leds {
         let mut data = vec![RGB8::default(); self.leds_num];
         let smoothness_pts = 500;
 
-        for j in 0..smoothness_pts {
+        for j in LOWEST_BRIGHTNESS as i32..smoothness_pts {
             let bright = 255.0 * (1.0 - (2.0 * j as f32 / smoothness_pts as f32 - 1.0).powi(2));
+
+            for i in 0..self.leds_num {
+                data[i] = color;
+            }
+
+            self.ws
+                .write(gamma(brightness(data.iter().cloned(), bright as u8)))
+                .map_err(|_| Error::Ws2812Error)?;
+            thread::sleep(delay);
+        }
+
+        Ok(())
+    }
+
+    pub fn gaussian_wave_breathing(&mut self, color: RGB8, delay: Duration) -> Result<(), Error> {
+        let mut data = vec![RGB8::default(); self.leds_num];
+        let smoothness_pts = 500;
+        let gamma = 0.14;
+        let beta = 0.5;
+
+        for j in LOWEST_BRIGHTNESS as i32..smoothness_pts {
+            let bright =
+                255.0 * (-((j as f32 / smoothness_pts as f32 - beta) / gamma).powi(2) / 2.0).exp();
 
             for i in 0..self.leds_num {
                 data[i] = color;
