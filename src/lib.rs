@@ -64,11 +64,31 @@ impl Leds {
         Ok(())
     }
 
-    pub fn breathing(&mut self, color: RGB8, delay: Duration) -> Result<(), Error> {
+    pub fn triangle_wave_breathing(&mut self, color: RGB8, delay: Duration) -> Result<(), Error> {
         let mut data = vec![RGB8::default(); self.leds_num];
 
         for j in LOWEST_BRIGHTNESS as u16..255 * 2 - LOWEST_BRIGHTNESS as u16 {
             let bright = if j > 255 { 255 * 2 - j } else { j };
+            for i in 0..self.leds_num {
+                data[i] = color;
+            }
+
+            self.ws
+                .write(gamma(brightness(data.iter().cloned(), bright as u8)))
+                .map_err(|_| Error::Ws2812Error)?;
+            thread::sleep(delay);
+        }
+
+        Ok(())
+    }
+
+    pub fn circular_wave_breathing(&mut self, color: RGB8, delay: Duration) -> Result<(), Error> {
+        let mut data = vec![RGB8::default(); self.leds_num];
+        let smoothness_pts = 500;
+
+        for j in 0..smoothness_pts {
+            let bright = 255.0 * (1.0 - (2.0 * j as f32 / smoothness_pts as f32 - 1.0).powi(2));
+
             for i in 0..self.leds_num {
                 data[i] = color;
             }

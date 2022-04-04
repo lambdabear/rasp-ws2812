@@ -161,17 +161,24 @@ fn main() -> Result<(), Error> {
 
     loop {
         // Breathing LED demo
+        println!("Triangle Wave Breathing ...");
         for _ in 0..3 {
-            leds.breathing(BLUE, Duration::from_millis(10))?;
+            leds.triangle_wave_breathing(BLUE, Duration::from_millis(10))?;
+        }
+        println!("Circular Wave Breathing ...");
+        for _ in 0..3 {
+            leds.circular_wave_breathing(GREEN, Duration::from_millis(10))?;
         }
 
         // Rainbow LED demo
+        println!("Rainbow ...");
         leds.rainbow(Duration::from_millis(10))?;
 
         // All colors demo
+        println!("Show all colors ...");
         for color in all_colors {
-            leds.on(color, 150);
-            thread::sleep(Duration::from_millis(2000));
+            leds.on(color, 150)?;
+            thread::sleep(DELAY);
         }
     }
 }
