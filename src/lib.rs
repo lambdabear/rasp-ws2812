@@ -87,8 +87,8 @@ impl Leds {
         let smoothness_pts = 500;
 
         for j in 0..smoothness_pts {
-            let bright: u8 =
-                255.0 * (1.0 - (2.0 * j as f32 / smoothness_pts as f32 - 1.0).powi(2)).into();
+            let bright =
+                255.0 * (1.0 - (2.0 * j as f32 / smoothness_pts as f32 - 1.0).powi(2)) as u8;
             let bright = if bright > LOWEST_BRIGHTNESS {
                 bright
             } else {
@@ -115,10 +115,8 @@ impl Leds {
         let b = 0.5;
 
         for j in 0..smoothness_pts {
-            let bright: u8 = 255.0
-                * (-((j as f32 / smoothness_pts as f32 - b) / g).powi(2) / 2.0)
-                    .exp()
-                    .into();
+            let bright =
+                255.0 * (-((j as f32 / smoothness_pts as f32 - b) / g).powi(2) / 2.0).exp() as u8;
             let bright = if bright > LOWEST_BRIGHTNESS {
                 bright
             } else {
