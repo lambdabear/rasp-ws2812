@@ -87,7 +87,8 @@ impl Leds {
         let smoothness_pts = 500;
 
         for j in 0..smoothness_pts {
-            let bright = 255.0 * (1.0 - (2.0 * j as f32 / smoothness_pts as f32 - 1.0).powi(2));
+            let bright: u8 =
+                255.0 * (1.0 - (2.0 * j as f32 / smoothness_pts as f32 - 1.0).powi(2)).into();
             let bright = if bright > LOWEST_BRIGHTNESS {
                 bright
             } else {
@@ -99,7 +100,7 @@ impl Leds {
             }
 
             self.ws
-                .write(gamma(brightness(data.iter().cloned(), bright as u8)))
+                .write(gamma(brightness(data.iter().cloned(), bright)))
                 .map_err(|_| Error::Ws2812Error)?;
             thread::sleep(delay);
         }
@@ -114,8 +115,10 @@ impl Leds {
         let b = 0.5;
 
         for j in 0..smoothness_pts {
-            let bright =
-                255.0 * (-((j as f32 / smoothness_pts as f32 - b) / g).powi(2) / 2.0).exp();
+            let bright: u8 = 255.0
+                * (-((j as f32 / smoothness_pts as f32 - b) / g).powi(2) / 2.0)
+                    .exp()
+                    .into();
             let bright = if bright > LOWEST_BRIGHTNESS {
                 bright
             } else {
@@ -127,7 +130,7 @@ impl Leds {
             }
 
             self.ws
-                .write(gamma(brightness(data.iter().cloned(), bright as u8)))
+                .write(gamma(brightness(data.iter().cloned(), bright)))
                 .map_err(|_| Error::Ws2812Error)?;
             thread::sleep(delay);
         }
