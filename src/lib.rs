@@ -105,12 +105,12 @@ impl Leds {
     pub fn gaussian_wave_breathing(&mut self, color: RGB8, delay: Duration) -> Result<(), Error> {
         let mut data = vec![RGB8::default(); self.leds_num];
         let smoothness_pts = 500;
-        let gamma = 0.14;
-        let beta = 0.5;
+        let g = 0.14;
+        let b = 0.5;
 
         for j in LOWEST_BRIGHTNESS as i32..smoothness_pts {
             let bright =
-                255.0 * (-((j as f32 / smoothness_pts as f32 - beta) / gamma).powi(2) / 2.0).exp();
+                255.0 * (-((j as f32 / smoothness_pts as f32 - b) / g).powi(2) / 2.0).exp();
 
             for i in 0..self.leds_num {
                 data[i] = color;
